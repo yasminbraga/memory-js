@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+}
+
+body {
+  background-color: #e2eafc;
+}
+
+main.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+  padding: 2rem;
+  color: rebeccapurple;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+  background-size: 150px;
+  transform: scale(1);
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.card.flip {
+  transform: rotateY(180deg);
+}
+
+.card img {
+  width: 100%;
+}
+
+footer {
+  width: 100%;
+  border-top: 1px solid rebeccapurple;
+  padding: 1rem;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+}
+
+footer p {
+  color: rebeccapurple;
+}
+
+footer a {
+  font-weight: 700;
+  color: rebeccapurple;
+}
