@@ -11,8 +11,11 @@ let cardsDiv = document.querySelector(".cards");
 let cardsChosenIds = [];
 let cardsChosen = [];
 let cardsWon = [];
+let moves = 0;
+let time = "";
+
+const movesDisplay = document.querySelector("#moves");
 const result = document.querySelector("#result");
-result.textContent = "0";
 
 const copyArray = [...imageArray];
 const board = imageArray.concat(copyArray);
@@ -31,10 +34,23 @@ function createCardBoard() {
     cardDiv.addEventListener("click", flipCard);
 
     cardsDiv.append(cardDiv);
+
+    showInfo();
   });
 }
 
-createCardBoard();
+function showInfo() {
+  movesDisplay.textContent = "0";
+  result.textContent = "0";
+}
+
+function resetCardBoard() {
+  cardsDiv.innerHTML = "";
+  cardsChosen = [];
+  cardsChosenIds = [];
+  moves = 0;
+  cardsWon = [];
+}
 
 function flipCard() {
   let cardId = this.getAttribute("data-id");
@@ -70,8 +86,78 @@ function checkForMatch() {
 
   cardsChosen = [];
   cardsChosenIds = [];
+  moves++;
+  movesDisplay.textContent = moves;
+
   result.textContent = cardsWon.length;
   if (cardsWon.length === shuffleBoard.length / 2) {
-    result.textContent = "Você achou todos os pares!";
+    // result.textContent = "Você achou todos os pares!";
+    reset();
+    const message = `Parabéns, você achou todos os pares em ${moves} movimentos e ${time}. Jogar novamente?`;
+    confirmation = confirm(message);
+    if (confirmation) {
+      resetCardBoard();
+      startGame();
+    }
   }
 }
+
+let minute = 0;
+let second = 0;
+let milisecond = 0;
+
+let count;
+
+function start() {
+  pause();
+  count = setInterval(() => {
+    timer();
+  }, 10);
+}
+
+function pause() {
+  clearInterval(count);
+}
+
+function reset() {
+  minute = 0;
+  second = 0;
+  milisecond = 0;
+  document.getElementById("second").innerText = "00";
+  document.getElementById("minute").innerText = "00";
+}
+
+function timer() {
+  if ((milisecond += 10) == 1000) {
+    milisecond = 0;
+    second++;
+  }
+
+  if (second == 60) {
+    second = 0;
+    minute++;
+  }
+
+  document.getElementById("second").innerText = returnData(second);
+  document.getElementById("minute").innerText = returnData(minute);
+  time = `${returnData(minute)}:${returnData(second)}`;
+}
+
+function returnData(input) {
+  return input > 10 ? input : `0${input}`;
+}
+
+function startGame() {
+  const confirmation = confirm("Iniciar jogo?");
+  if (confirmation) {
+    start();
+    createCardBoard();
+  } else {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach((card) => {
+      card.removeEventListener("click", flipCard);
+    });
+  }
+}
+
+window.onload = startGame();
